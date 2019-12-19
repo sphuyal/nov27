@@ -37,6 +37,7 @@ users.findOne({
         next();
     }
     else{
+        res.status(409);
     res.json ({status:409, message:'user already exist'})
     }
 }).catch(function(err){
@@ -51,7 +52,7 @@ function Register(req,res,next){
     })
     .then(function(result){
         console.log(result);
-        res.status(201);
+        res.status(200);
         res.json({status:200,message:'registered successfully'});
         next();
     }).catch(function(err){

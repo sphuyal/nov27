@@ -1,11 +1,11 @@
 var bcrypt = require('bcryptjs');
 var jwt = require("jsonwebtoken");
 var users = require("../Models/UserModel.js");
-var secret = 'PleiadesIsMySecretKey';
+var secret = 'SphuyalMySecretKey';
 function validation(req,res,next){
  if(req.body.username === "" || req.body.password ===""){
-    res.status(404);
-    res.json({status:404,message:'please enter the given fields'})
+    res.status(204);
+    res.json({status:406,message:'please enter the given fields'})
  }
  else{
     users.findOne({
@@ -15,8 +15,8 @@ function validation(req,res,next){
     })
     .then(function(result){
         if (result === null){
-            res.status(404);
-            res.json({status:404,message:'username doesnt exist'});}
+            res.status(409);
+            res.json({status:409,message:'username doesnt exist'});}
         else{
             req.passwordfromdb = result.dataValues.password;
             req.usernamefromdb = result.dataValues.username;
@@ -36,8 +36,8 @@ bcrypt.compare(req.body.password,req.passwordfromdb)
     next();
     }
     else{
-        res.status(400);
-        res.json({status:400,message:"incorrect password"});
+        res.status(404);
+        res.json({status:404,message:"incorrect password"});
     }
 })
 .catch(function(err){
@@ -55,7 +55,6 @@ function jwtTokenGen(req,res,next){
         //console.log(err);
         console.log(resultToken);
         res.json({"userToken: ":resultToken})
-    
     })
 }
 
@@ -65,7 +64,7 @@ function verifyToken(req,res,next){
 // URL/URI
 if(req.headers.authorization === undefined){
     res.status(401);
-    res.json({status:404,message:"unauthorized access"});
+    res.json({status:401,message:"unauthorized access"});
 }
 var token = req.headers.authorization;
 token = token.slice(7, token.length).trimLeft();
