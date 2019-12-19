@@ -24,7 +24,7 @@ var swaggerDefinition = {
             scheme:'bearer',
         }
     },
-    host:'localhost:3002',
+    host:'localhost:3006',
     basePath:'/'
 };
 
@@ -44,13 +44,15 @@ app.use('/api-docs',swaggerUI.serve,swaggerUI.setup(swaggerSpecs));
 //     console.log(req.query);
 //     res.send('req recieved');
 // })
-// app.listen(3005);
+// app.listen(3001);
 
 app.use(bodyParser.urlencoded({extended:true}));
 
+
+
+
 app.post('/registration',userController.Validator,userController.UserExist,
 userController.genHash,userController.Register);
-app.post('/profile', upload.single('image'),userController.UploadImage);
 
 /**
  * @swagger
@@ -94,7 +96,13 @@ app.post('/profile', upload.single('image'),userController.UploadImage);
 
 
 
+
 app.post('/login',authController.validation,authController.passwordChecker,authController.jwtTokenGen);
+
+app.post('/profile', upload.single('image'),userController.UploadImage);
+
+
+
 
 /**
  * @swagger
@@ -129,7 +137,12 @@ app.post('/login',authController.validation,authController.passwordChecker,authC
  * 
  * 
  */
+
+
+
+
 app.delete('/users/:id',authController.verifyToken,userController.deleteuser);
+
 
 /**
 * @swagger
@@ -150,6 +163,8 @@ app.delete('/users/:id',authController.verifyToken,userController.deleteuser);
 *      required: true
 *      description: please enter id
 *   responses:
+*    200:
+*     description: User Deleted sucessfully
 *    500:
 *     description: User not found
 */
