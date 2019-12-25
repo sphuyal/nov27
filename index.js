@@ -170,3 +170,5 @@ app.delete('/users/:id',authController.verifyToken,userController.deleteuser);
 */
 
 app.listen(3006);
+
+module.exports=app;
